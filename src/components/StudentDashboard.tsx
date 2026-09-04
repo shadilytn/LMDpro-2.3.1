@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemedCourseImage } from "./ThemedCourseImage";
 import { D3LearningPathMap } from "./D3LearningPathMap";
+import { InteractiveLearningRoadmap } from "./InteractiveLearningRoadmap";
 import { AdaptiveLearningPathAdvisor } from "./AdaptiveLearningPathAdvisor";
 import { DashboardCustomizerModal } from "./DashboardCustomizerModal";
 import { AIDiscoveryFeed } from "./AIDiscoveryFeed";
@@ -8,7 +9,6 @@ import { GamificationDashboard } from "./GamificationDashboard";
 import { AIRecommendationEngine } from "./AIRecommendationEngine";
 import { MyBookmarksTab } from "./MyBookmarksTab";
 import { Tooltip } from "./Tooltip";
-import { WeeklyStudyGrid } from "./WeeklyStudyGrid";
 import {
   Course,
   UserProfile,
@@ -99,6 +99,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const [smartSortMode, setSmartSortMode] = React.useState<SmartSortMode>("ai_priority");
   const [smartSortEnabled, setSmartSortEnabled] = React.useState<boolean>(true);
   const [courseSortBy, setCourseSortBy] = React.useState<'smart' | 'progress' | 'rating' | 'duration' | 'alphabetical'>('smart');
+  const [activeRoadmapCourseId, setActiveRoadmapCourseId] = React.useState<string>(() => {
+    return user.enrolledCourseIds?.[0] || courses[0]?.id || "";
+  });
+  const [roadmapViewType, setRoadmapViewType] = React.useState<"interactive_roadmap" | "d3_graph">("interactive_roadmap");
 
   const dailyGoalMinutes = user.dailyStudyGoal || 60;
 
@@ -117,10 +121,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     { id: "weekly_summary", title: isAr ? "ملخص التعلم الأسبوعي" : "Weekly Learning Summary", visible: true, order: 6 },
     { id: "challenge_arena", title: isAr ? "ساحة التحديات والمنافسة الأكاديمية" : "Challenge Arena", visible: true, order: 7 },
     { id: "recent_activity", title: isAr ? "النشاط الأخير ومتابعة الدروس" : "Recent Activity & Lesson Progress", visible: true, order: 8 },
-    { id: "upcoming_deadlines", title: isAr ? "المواعيد والمهام القادمة" : "Upcoming Deadlines & Schedule", visible: true, order: 9 },
-    { id: "my_bookmarks", title: isAr ? "علاماتي المرجعية والمحفوظات" : "My Bookmarked Lessons & Saved Topics", visible: true, order: 10 },
-    { id: "enrolled_courses", title: isAr ? "شبكة المقررات المسجلة والموصى بها" : "Enrolled & Recommended Courses Grid", visible: true, order: 11 },
-    { id: "google_workspace", title: isAr ? "مساحة عمل Google والملفات السحابية" : "Google Workspace & Cloud Files", visible: true, order: 12 },
+    { id: "my_bookmarks", title: isAr ? "علاماتي المرجعية والمحفوظات" : "My Bookmarked Lessons & Saved Topics", visible: true, order: 9 },
+    { id: "enrolled_courses", title: isAr ? "شبكة المقررات المسجلة والموصى بها" : "Enrolled & Recommended Courses Grid", visible: true, order: 10 },
+    { id: "google_workspace", title: isAr ? "مساحة عمل Google والملفات السحابية" : "Google Workspace & Cloud Files", visible: true, order: 11 },
   ];
 
   const widgetConfig = user.dashboardWidgets && user.dashboardWidgets.length > 0
@@ -807,15 +810,98 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 />
               );
 
-            case "d3_learning_path":
+            case "d3_learning_path": {
+              const activeRoadmapCourse = courses.find((c) => c.id === activeRoadmapCourseId) || courses[0];
+              const roadmapProgress = activeRoadmapCourse ? progressMap[activeRoadmapCourse.id] : undefined;
+
               return (
-                <D3LearningPathMap
-                  key={widget.id}
-                  courses={courses}
-                  enrolledCourseIds={user.enrolledCourseIds}
-                  onSelectCourse={onSelectCourse}
-                />
+                <div key={widget.id} className="space-y-3">
+                  {/* Roadmap Mode Switcher & Course Selector Header */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#061219]/90 border border-cyan-500/30 shadow-lg">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shrink-0">
+                        <Compass className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                          <span>{isAr ? "خريطة التعلم التفاعلية واستباق المعالم" : "Interactive Learning Roadmap & Milestones"}</span>
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/40 uppercase">
+                            {roadmapViewType === "interactive_roadmap" ? (isAr ? "شجرة المسار" : "Milestone Nodes") : "D3 Graph"}
+                          </span>
+                        </h3>
+                        <p className="text-[10px] sm:text-[11px] text-[#82a4b3]">
+                          {isAr
+                            ? "استكشف تبعيات الدروس والمعالم القادمة وقم بالتحميل المسبق للمحتوى للوصول الفوري بدون إنترنت."
+                            : "Explore node dependencies, inspect prerequisites, and pre-load upcoming milestones for instant offline study."}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                      {/* Course Selection Dropdown / Selector */}
+                      {courses.length > 1 && (
+                        <select
+                          value={activeRoadmapCourse?.id || ""}
+                          onChange={(e) => setActiveRoadmapCourseId(e.target.value)}
+                          aria-label={isAr ? "اختيار المقرر للخريطة" : "Select course for roadmap"}
+                          className="px-2.5 py-1.5 rounded-xl bg-[#091b24] border border-[#163647] text-cyan-200 text-xs font-semibold focus:outline-none focus:border-cyan-400 shrink-0 max-w-[200px] truncate"
+                        >
+                          {courses.map((c) => (
+                            <option key={c.id} value={c.id}>
+                              {user.enrolledCourseIds.includes(c.id) ? "★ " : ""}{c.title}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+
+                      {/* View Switcher: Interactive Roadmap vs D3 Graph */}
+                      <div className="flex items-center p-0.5 rounded-xl bg-[#091b24] border border-[#163647] shrink-0">
+                        <button
+                          onClick={() => setRoadmapViewType("interactive_roadmap")}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                            roadmapViewType === "interactive_roadmap"
+                              ? "bg-cyan-600 text-white shadow-sm"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          {isAr ? "المسار التفاعلي" : "Node Roadmap"}
+                        </button>
+                        <button
+                          onClick={() => setRoadmapViewType("d3_graph")}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                            roadmapViewType === "d3_graph"
+                              ? "bg-cyan-600 text-white shadow-sm"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          {isAr ? "شبكة D3" : "D3 Network"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Active Visualizer Body */}
+                  {roadmapViewType === "interactive_roadmap" && activeRoadmapCourse ? (
+                    <InteractiveLearningRoadmap
+                      course={activeRoadmapCourse}
+                      completedLessonIds={roadmapProgress?.completedLessonIds || []}
+                      onSelectLesson={(lessonId) => {
+                        onSelectCourse(activeRoadmapCourse);
+                      }}
+                      onSelectModule={(moduleId) => {
+                        onSelectCourse(activeRoadmapCourse);
+                      }}
+                    />
+                  ) : (
+                    <D3LearningPathMap
+                      courses={courses}
+                      enrolledCourseIds={user.enrolledCourseIds}
+                      onSelectCourse={onSelectCourse}
+                    />
+                  )}
+                </div>
               );
+            }
 
             case "ai_discovery_feed":
               return (
@@ -962,128 +1048,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                           <button className="px-3 sm:px-4 py-1 sm:py-1.5 bg-[#143242] text-[#82a4b3] border border-[#1c3a47] rounded-lg text-[11px] sm:text-xs font-semibold cursor-not-allowed">
                             {isAr ? "تذكيري" : "Notify Me"}
                           </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-
-            case "upcoming_deadlines":
-              return (
-                <div key={widget.id} className="bg-[#061219]/90 border border-[#163647] rounded-3xl p-4 sm:p-6 space-y-5 shadow-xl">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#132f3e] pb-3">
-                    <div>
-                      <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
-                        {isAr ? "جدول الدراسة والمواعيد القادمة" : "Study Schedule & Upcoming Milestones"}
-                      </h2>
-                      <p className="text-[11px] sm:text-xs text-[#82a4b3]">
-                        {isAr
-                          ? "استعرض جدولك الأسبوعي والمواعيد النهائية والمهام المسجلة."
-                          : "Your active milestones, scheduled lectures, and upcoming exams."}
-                      </p>
-                    </div>
-                    {onNavigateTab && (
-                      <button
-                        onClick={() => onNavigateTab("schedule")}
-                        className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-bold transition-all flex items-center gap-1.5 group"
-                      >
-                        <span>{isAr ? "المخطط الأسبوعي الكامل" : "Open Full Weekly Matrix"}</span>
-                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                    {/* Urgent Deadlines & Exams */}
-                    <div className="space-y-3">
-                      <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                        <span>{isAr ? "مواعيد هامة عاجلة" : "Urgent Deadlines"}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold">2 Due Soon</span>
-                      </div>
-                      <div
-                        onClick={() => {
-                          const algCourse = courses.find((c) => c.title.toLowerCase().includes("algorithm") || c.category.toLowerCase().includes("computer"));
-                          if (algCourse) onSelectCourse(algCourse);
-                          else if (onNavigateTab) onNavigateTab("educational_materials");
-                        }}
-                        className="p-3.5 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-[#030b10] border border-cyan-500/20 flex items-center justify-between gap-3 cursor-pointer hover:border-cyan-400/50 transition-all hover:bg-cyan-950/20"
-                      >
-                        <div className="min-w-0">
-                          <span className="text-[9px] font-mono text-cyan-400 uppercase tracking-wider block mb-1">
-                            {isAr ? "مستحق خلال يومين" : "Due in 2 days • CS-401"}
-                          </span>
-                          <h4 className="font-bold text-xs text-white truncate">
-                            {isAr ? "مشروع التخرج في الخوارزميات" : "Algorithms Capstone Project"}
-                          </h4>
-                          <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">
-                            {isAr ? "تسليم النموذج الأولي للتحليل والرسومات البيانية" : "Submit bipartite matching algorithm & benchmark report"}
-                          </p>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-cyan-400 shrink-0" />
-                      </div>
-                      <div
-                        onClick={() => {
-                          const aiCourse = courses.find((c) => c.title.toLowerCase().includes("neural") || c.title.toLowerCase().includes("ai") || c.category.toLowerCase().includes("ai"));
-                          if (aiCourse) onSelectCourse(aiCourse);
-                          else if (onNavigateTab) onNavigateTab("educational_materials");
-                        }}
-                        className="p-3.5 rounded-2xl bg-[#030b10] border border-[#163647] flex items-center justify-between gap-3 cursor-pointer hover:border-cyan-400/50 transition-all hover:bg-[#0a1e28]"
-                      >
-                        <div className="min-w-0">
-                          <span className="text-[9px] font-mono text-cyan-400 uppercase tracking-wider block mb-1">
-                            {isAr ? "مستحق خلال 5 أيام" : "Due in 5 days • AI-502"}
-                          </span>
-                          <h4 className="font-bold text-xs text-white truncate">
-                            {isAr ? "الاختبار النصفي للشبكات العصبية" : "Neural Networks Midterm Assessment"}
-                          </h4>
-                          <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">
-                            {isAr ? "مراجعة مفاهيم Backprop و Transformer Attention" : "Review Backpropagation, Transformer Attention & Loss"}
-                          </p>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-cyan-400 shrink-0" />
-                      </div>
-                    </div>
-
-                    {/* Today & Upcoming Schedule Sessions */}
-                    <div className="space-y-3">
-                      <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                        <span>{isAr ? "جلسات اليوم وجدول هذا الأسبوع" : "Today & Upcoming Sessions"}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold">3 Active</span>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="p-3 rounded-2xl bg-[#030b10] border border-cyan-500/20 flex items-center justify-between gap-2.5">
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="w-2 h-2 rounded-full bg-cyan-400 shrink-0 animate-ping" />
-                            <div className="min-w-0">
-                              <span className="text-[9px] font-mono text-cyan-300 font-bold block">14:00 - 15:30 • Live Lecture</span>
-                              <h4 className="font-bold text-xs text-white truncate">AI Ethics & Algorithmic Accountability</h4>
-                            </div>
-                          </div>
-                          <span className="px-2 py-0.5 rounded-lg bg-cyan-950 text-cyan-300 text-[10px] font-bold shrink-0">Today</span>
-                        </div>
-
-                        <div className="p-3 rounded-2xl bg-[#030b10] border border-[#163647] flex items-center justify-between gap-2.5">
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="w-2 h-2 rounded-full bg-cyan-400 shrink-0" />
-                            <div className="min-w-0">
-                              <span className="text-[9px] font-mono text-cyan-400 font-bold block">16:30 - 17:30 • Lab</span>
-                              <h4 className="font-bold text-xs text-white truncate">SVD & Matrix Decomposition Workshop</h4>
-                            </div>
-                          </div>
-                          <span className="px-2 py-0.5 rounded-lg bg-[#0c1a24] text-slate-300 text-[10px] font-bold shrink-0">Tomorrow</span>
-                        </div>
-
-                        <div className="p-3 rounded-2xl bg-[#030b10] border border-[#163647] flex items-center justify-between gap-2.5">
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="w-2 h-2 rounded-full bg-cyan-400 shrink-0" />
-                            <div className="min-w-0">
-                              <span className="text-[9px] font-mono text-cyan-400 font-bold block">10:00 - 11:30 • Study Group</span>
-                              <h4 className="font-bold text-xs text-white truncate">Distributed Sheaf Consensus Seminar</h4>
-                            </div>
-                          </div>
-                          <span className="px-2 py-0.5 rounded-lg bg-[#0c1a24] text-slate-300 text-[10px] font-bold shrink-0">Thursday</span>
                         </div>
                       </div>
                     </div>

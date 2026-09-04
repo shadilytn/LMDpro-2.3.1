@@ -369,6 +369,23 @@ export const AITutorModal: React.FC<AITutorModalProps> = ({
               <span className="hidden sm:inline">Search Grounded</span>
             </div>
 
+            {/* Discussion Notebooks Sidebar Toggle */}
+            {activeTab === "socratic_dialogue" && (
+              <button
+                onClick={() => setShowSourceSidebar(!showSourceSidebar)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                  showSourceSidebar
+                    ? "bg-cyan-500/20 border-cyan-400 text-cyan-200"
+                    : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                }`}
+                title="Toggle Notebook Threads Sidebar"
+                aria-label="Toggle Notebook Threads Sidebar"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden md:inline">Notebooks</span>
+              </button>
+            )}
+
             {/* Deep Reasoning Mode Toggle */}
             <button
               onClick={() => setThinkingMode(!thinkingMode)}
@@ -402,66 +419,68 @@ export const AITutorModal: React.FC<AITutorModalProps> = ({
         {activeTab === "socratic_dialogue" && (
           <div className="flex-1 flex overflow-hidden">
             {/* NotebookLM Thread Sidebar */}
-            <div className="w-64 bg-[#0a171f] border-r border-[#193949] flex flex-col shrink-0 hidden md:flex">
-              <div className="p-3 border-b border-[#173646] flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
-                  Discussion Notebooks
-                </span>
-                <button
-                  onClick={handleCreateNewThread}
-                  className="p-1 rounded-lg bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-300 border border-cyan-500/30 transition-colors"
-                  title="New Discussion Thread"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
-                {threads.map((thread) => {
-                  const isActive = thread.id === activeThreadId;
-                  return (
-                    <div
-                      key={thread.id}
-                      onClick={() => setActiveThreadId(thread.id)}
-                      className={`group p-2.5 rounded-xl text-xs cursor-pointer transition-all flex items-center justify-between border ${
-                        isActive
-                          ? "bg-cyan-600/20 border-cyan-500/40 text-white font-semibold"
-                          : "bg-[#0e212b]/40 border-transparent text-[#82a4b3] hover:bg-white/5 hover:text-white"
-                      }`}
-                    >
-                      <div className="truncate flex items-center gap-2">
-                        <FileText
-                          className={`w-3.5 h-3.5 ${isActive ? "text-cyan-400" : "text-gray-500"}`}
-                        />
-                        <span className="truncate">{thread.title}</span>
-                      </div>
-                      {threads.length > 1 && (
-                        <button
-                          onClick={(e) => handleDeleteThread(e, thread.id)}
-                          className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-cyan-400 transition-opacity"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Source Document Citation Widget */}
-              <div className="p-3 bg-[#08131a] border-t border-[#173646] text-[11px] space-y-2">
-                <div className="flex items-center gap-1.5 text-cyan-300 font-bold">
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>Indexed Source Document</span>
+            {showSourceSidebar && (
+              <div className="w-64 bg-[#0a171f] border-r border-[#193949] flex flex-col shrink-0">
+                <div className="p-3 border-b border-[#173646] flex items-center justify-between">
+                  <span className="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
+                    Discussion Notebooks
+                  </span>
+                  <button
+                    onClick={handleCreateNewThread}
+                    className="p-1 rounded-lg bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-300 border border-cyan-500/30 transition-colors"
+                    title="New Discussion Thread"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
                 </div>
-                <p className="text-[#7d9eb0] line-clamp-2">
-                  {initialContextLessonTitle
-                    ? `"${initialContextLessonTitle}"`
-                    : "General LMD Academic Curriculum and ECTS Repository"}
-                </p>
+
+                <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+                  {threads.map((thread) => {
+                    const isActive = thread.id === activeThreadId;
+                    return (
+                      <div
+                        key={thread.id}
+                        onClick={() => setActiveThreadId(thread.id)}
+                        className={`group p-2.5 rounded-xl text-xs cursor-pointer transition-all flex items-center justify-between border ${
+                          isActive
+                            ? "bg-cyan-600/20 border-cyan-500/40 text-white font-semibold"
+                            : "bg-[#0e212b]/40 border-transparent text-[#82a4b3] hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        <div className="truncate flex items-center gap-2">
+                          <FileText
+                            className={`w-3.5 h-3.5 ${isActive ? "text-cyan-400" : "text-gray-500"}`}
+                          />
+                          <span className="truncate">{thread.title}</span>
+                        </div>
+                        {threads.length > 1 && (
+                          <button
+                            onClick={(e) => handleDeleteThread(e, thread.id)}
+                            className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-cyan-400 transition-opacity"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Source Document Citation Widget */}
+                <div className="p-3 bg-[#08131a] border-t border-[#173646] text-[11px] space-y-2">
+                  <div className="flex items-center gap-1.5 text-cyan-300 font-bold">
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>Indexed Source Document</span>
+                  </div>
+                  <p className="text-[#7d9eb0] line-clamp-2">
+                    {initialContextLessonTitle
+                      ? `"${initialContextLessonTitle}"`
+                      : "General LMD Academic Curriculum and ECTS Repository"}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Chat Conversation Area */}
             <div className="flex-1 flex flex-col overflow-hidden bg-[#0d1c24]">

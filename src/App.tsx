@@ -21,6 +21,7 @@ import { ToastNotificationSystem } from "./components/ToastNotificationSystem";
 import { AnimatedGeometricBackground } from "./components/AnimatedGeometricBackground";
 import { ToolType } from "./components/ToolModalOverlay";
 import { WebAuthnService } from "./services/webAuthnService";
+import { updateDocumentMetadata } from "./services/metadataSpec";
 import { Lock, Fingerprint, Key, ShieldCheck, ArrowRight, Sparkles, RefreshCw, History, CheckCircle2, XCircle } from "lucide-react";
 
 // Lazy load all secondary modals and non-critical dashboard views
@@ -202,6 +203,10 @@ export default function App() {
       if (unsubscribe) unsubscribe();
     };
   }, [user.language]);
+
+  React.useEffect(() => {
+    updateDocumentMetadata(activeTab, { lang: user.language });
+  }, [activeTab, user.language]);
 
   const [quickStudyMode, setQuickStudyMode] = React.useState(false);
 

@@ -334,8 +334,8 @@ export const DegreeProgramsCatalog: React.FC<DegreeProgramsCatalogProps> = ({
               <span>{isAr ? "المحفوظات" : "Saved"}</span>
             </button>
 
-            <span className="text-slate-400 bg-white/5 px-3 py-2 rounded-xl border border-white/10">
-              {filteredPrograms.length} {isAr ? "برنامج مطابق" : "Matches"}
+            <span className="text-cyan-400 bg-cyan-950/40 px-3 py-2 rounded-xl border border-cyan-500/20 font-medium">
+              {isAr ? "البرامج المتاحة" : "Academic Pathways"}
             </span>
           </div>
         </div>
@@ -391,15 +391,12 @@ export const DegreeProgramsCatalog: React.FC<DegreeProgramsCatalogProps> = ({
           </div>
         </div>
 
-        {/* 10 Disciplines Bento Grid */}
+        {/* Disciplines Bento Grid Filter */}
         <div className="space-y-3">
           <div className="flex items-center justify-between text-xs font-bold text-slate-300 uppercase tracking-wider px-1">
             <span className="flex items-center gap-1.5">
               <Filter className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Filter by Academic Domains</span>
-            </span>
-            <span className="text-[11px] text-slate-500 normal-case font-normal font-mono">
-              Click to narrow down catalog
+              <span>{isAr ? "تصفية حسب المجال الأكاديمي" : "Filter by Academic Domains"}</span>
             </span>
           </div>
 
@@ -407,32 +404,6 @@ export const DegreeProgramsCatalog: React.FC<DegreeProgramsCatalogProps> = ({
             {categories.map((cat) => {
               const IconComponent = getCategoryIcon(cat);
               const isSelected = selectedCategory === cat;
-
-              // Count matching programs in this category (independently of current selectedCategory filter, but respecting search/level)
-              const catCount = DEGREE_PROGRAMS.filter((p) => {
-                const matchesSearch =
-                  p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  p.description
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase());
-                const matchesLevel =
-                  selectedDegreeLevel === "All" ||
-                  (selectedDegreeLevel === "Master" &&
-                    p.degreeMetadata.degreeLevel.includes("Master")) ||
-                  (selectedDegreeLevel === "Bachelor" &&
-                    p.degreeMetadata.degreeLevel.includes("Bachelor")) ||
-                  (selectedDegreeLevel === "Doctorate" &&
-                    (p.degreeMetadata.degreeLevel.includes("Ph.D") ||
-                      p.degreeMetadata.degreeLevel.includes("Doctor"))) ||
-                  (selectedDegreeLevel === "PostDoc" &&
-                    (p.degreeMetadata.degreeLevel.includes("Post-Doc") ||
-                      p.degreeMetadata.degreeLevel.includes("Research")));
-                return (
-                  matchesSearch &&
-                  matchesLevel &&
-                  (cat === "All" || p.category === cat)
-                );
-              }).length;
 
               return (
                 <button

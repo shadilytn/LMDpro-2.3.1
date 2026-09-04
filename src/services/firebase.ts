@@ -34,19 +34,27 @@ const mergedConfig = {
 const app = initializeApp(mergedConfig);
 
 // Initialize Firestore with specific database ID and enhanced resilience settings for reliable iframe/container networking
+const targetDbId: string | undefined = (mergedConfig as any).firestoreDatabaseId || undefined;
+
 let firestoreInstance: Firestore;
 try {
-  firestoreInstance = initializeFirestore(app, {
-    experimentalForceLongPolling: true,
-    experimentalAutoDetectLongPolling: true,
-    ignoreUndefinedProperties: true
-  });
+  firestoreInstance = targetDbId
+    ? initializeFirestore(app, {
+        experimentalForceLongPolling: true,
+        experimentalAutoDetectLongPolling: true,
+        ignoreUndefinedProperties: true
+      }, targetDbId)
+    : initializeFirestore(app, {
+        experimentalForceLongPolling: true,
+        experimentalAutoDetectLongPolling: true,
+        ignoreUndefinedProperties: true
+      });
 
   // Enable offline persistence if in browser environment
   if (typeof window !== 'undefined') {
     enableIndexedDbPersistence(firestoreInstance).catch((err) => {
       if (err.code === 'failed-precondition') {
-        // Multiple tabs open, persistence can only be enabled in one tab at a a time.
+        // Multiple tabs open, persistence can only be enabled in one tab at a time.
         console.warn('[Firestore] Persistence failed: Multiple tabs open');
       } else if (err.code === 'unimplemented') {
         // The current browser does not support all of the features required to enable persistence
@@ -56,7 +64,7 @@ try {
   }
 } catch (err) {
   console.warn('[Firestore] Advanced initialization failed, falling back to standard client:', err);
-  firestoreInstance = getFirestore(app);
+  firestoreInstance = targetDbId ? getFirestore(app, targetDbId) : getFirestore(app);
 }
 
 export const db = firestoreInstance;

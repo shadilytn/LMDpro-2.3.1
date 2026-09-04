@@ -580,8 +580,32 @@ header {
   --layer-toast: 200;
 }
 
+/* Base Desktop & Universal .dashboard-stats-grid rules */
+.dashboard-stats-grid,
+.dashboard-widget-grid,
+.stats-card-grid,
+.xp-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-stats-grid > *,
+.dashboard-widget-grid > *,
+.stats-card-grid > *,
+.xp-metrics-grid > * {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 @media (max-width: 768px) {
-  /* Persistent 2-column layout for dashboard stats, widgets, XP counters, and cards */
+  /* Persistent strictly non-overlapping 2-column layout for mobile */
   .mobile-2col-grid,
   .dashboard-stats-grid,
   .dashboard-widget-grid,
@@ -589,49 +613,80 @@ header {
   .stats-card-grid,
   .xp-metrics-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.625rem !important;
     width: 100% !important;
-    padding: 0.5rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
     box-sizing: border-box !important;
     position: relative;
     z-index: var(--layer-base);
     isolation: isolate;
+    align-items: stretch !important;
   }
 
   .dashboard-stats-grid > *,
   .dashboard-widget-grid > *,
   .stats-card-grid > *,
   .xp-metrics-grid > * {
-    min-width: 0;
-    width: 100%;
-    overflow: hidden;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
     position: relative;
     z-index: var(--layer-card);
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box !important;
     /* Theme adaptation: Navy-Turquoise borders and Liquid Glass background */
-    background: var(--bg-surface-elevated) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 0.75rem !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    background: var(--bg-surface-elevated, rgba(16, 74, 90, 0.25)) !important;
+    border: 1px solid var(--border-color, rgba(91, 196, 212, 0.25)) !important;
+    border-radius: 0.875rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
   }
 
   .dashboard-stats-grid > *:hover,
-  .dashboard-widget-grid > *:hover {
-    border-color: var(--accent-turquoise) !important;
-    background: var(--bg-surface-hover) !important;
+  .dashboard-widget-grid > *:hover,
+  .stats-card-grid > *:hover,
+  .xp-metrics-grid > *:hover {
+    border-color: var(--accent-turquoise, #5bc4d4) !important;
+    background: var(--bg-surface-hover, rgba(16, 74, 90, 0.4)) !important;
+    transform: translateY(-1px);
   }
 
-  /* Prevent overlapping and force span 1 in dashboard grid items */
+  /* Prevent overlapping and force span 1 in dashboard grid items on mobile */
   .dashboard-stats-grid > *:nth-child(n),
   .dashboard-widget-grid > *:nth-child(n),
   .stats-card-grid > *:nth-child(n),
   .xp-metrics-grid > *:nth-child(n) {
     grid-column: span 1 !important;
     grid-row: auto !important;
+    float: none !important;
+    clear: none !important;
+  }
+
+  /* Stat numbers and text inside 2-col cards */
+  .dashboard-stats-grid .stat-number,
+  .xp-metrics-grid .stat-number,
+  .stats-card-grid .stat-number {
+    font-size: clamp(1rem, 0.9rem + 1vw, 1.25rem) !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+  }
+
+  .dashboard-stats-grid .stat-label,
+  .xp-metrics-grid .stat-label,
+  .stats-card-grid .stat-label {
+    font-size: 0.7rem !important;
+    line-height: 1.1 !important;
+    opacity: 0.85;
+    white-space: normal !important;
   }
 
   /* Smooth transition for cards with nested XP/Stats data to prevent viewport breaking */

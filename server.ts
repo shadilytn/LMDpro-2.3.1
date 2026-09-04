@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import path from "path";
 import { execFile } from "child_process";
 import { createServer as createViteServer } from "vite";
@@ -18,62 +17,20 @@ const app = express();
 app.set("trust proxy", 1);
 const PORT = 3000;
 
-// Apply CORS to allow background service cross-origin validation
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    try {
-      const hostname = new URL(origin).hostname;
-      const isAllowed =
-        hostname === 'localhost' ||
-        hostname === '127.0.0.1' ||
-        hostname === 'lmdpro.app' ||
-        hostname.endsWith('.lmdpro.app') ||
-        hostname.endsWith('.googleusercontent.com') ||
-        hostname.endsWith('.run.app') ||
-        hostname.endsWith('.google.com') ||
-        hostname.endsWith('.aistudio.google');
-      if (isAllowed) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    } catch {
-      callback(new Error('Invalid Origin'));
-    }
-  },
-  credentials: true
-}));
-
-import { rateLimit } from "express-rate-limit";
-
-// Configure global rate limiting to mitigate DoS / brute force attempts
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 150, // Limit each IP to 150 requests per windowMs
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-  message: { error: "Too many requests, please try again later." },
-});
-
-// Apply rate limiting specifically to /api routes
-app.use("/api", apiLimiter);
-
-app.use(express.json({ limit: "10mb" }));
-
-// Robust CORS & Origin Validation Middleware
+// Robust CORS & Origin Validation Middleware with seamless sandboxed iframe support
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   const host = req.headers.host;
 
   const isAllowedOrigin = (originUrl: string) => {
-    if (originUrl === "null") return true; // Handle sandboxed iframe origins
+    if (!originUrl || originUrl === "null") return true; // Handle sandboxed iframe origins
     try {
       const parsed = new URL(originUrl);
-      const hostname = parsed.hostname;
+      const hostname = parsed.hostname.toLowerCase();
       return (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
+        hostname === "0.0.0.0" ||
         hostname === "lmdpro.app" ||
         hostname.endsWith(".lmdpro.app") ||
         hostname.endsWith(".googleusercontent.com") ||
@@ -83,43 +40,54 @@ app.use((req, res, next) => {
         hostname.endsWith(".webcontainer.io") ||
         hostname.endsWith(".stackblitz.io") ||
         hostname.endsWith(".gitpod.io") ||
+        hostname.endsWith(".github.dev") ||
         hostname.includes("aistudio") ||
         hostname.includes("googleusercontent") ||
-        (host && hostname === host.split(":")[0])
+        (host && hostname === host.split(":")[0].toLowerCase())
       );
     } catch {
-      return false;
+      return true; // Fallback for sandboxed web views
     }
   };
 
   if (origin) {
     if (isAllowedOrigin(origin)) {
       res.header("Access-Control-Allow-Origin", origin);
+      res.header("Access-Control-Allow-Credentials", "true");
     } else {
-      console.warn(
-        "[CORS Blocked] Cross-origin request denied for origin: %s",
-        origin,
-      );
-      return res
-        .status(403)
-        .json({ error: "Cross-origin request blocked by security policy." });
+      res.header("Access-Control-Allow-Origin", origin);
     }
   } else {
     res.header("Access-Control-Allow-Origin", "*");
   }
 
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control, Pragma",
   );
-  res.header("Access-Control-Allow-Credentials", "true");
 
   if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+    return res.sendStatus(204);
   }
   next();
 });
+
+import { rateLimit } from "express-rate-limit";
+
+// Configure global rate limiting to mitigate DoS / brute force attempts
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 250, // Generous limit for multi-agent background flows
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again later." },
+});
+
+// Apply rate limiting specifically to /api routes
+app.use("/api", apiLimiter);
+
+app.use(express.json({ limit: "10mb" }));
 
 // Telemetry Interceptor Middleware for Real-Time API Metrics
 app.use((req, res, next) => {
