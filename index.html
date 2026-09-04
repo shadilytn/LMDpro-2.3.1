@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    
+    <!-- SEO Meta Tags -->
+    <title>LMDpro | Autonomous AI eLearning Platform</title>
+    <meta name="description" content="LMDpro is a state-of-the-art autonomous AI eLearning platform. Featuring adaptive learning roadmaps, real-time Socratic AI tutoring, multi-role dashboards, and automated academic progress tracking." />
+    <meta property="og:title" content="LMDpro | Autonomous AI eLearning Platform" />
+    <meta property="og:description" content="LMDpro is a state-of-the-art autonomous AI eLearning platform. Featuring adaptive learning roadmaps, real-time Socratic AI tutoring, multi-role dashboards, and automated academic progress tracking." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LMDpro | Autonomous AI eLearning Platform" />
+    <meta name="twitter:description" content="LMDpro is a state-of-the-art autonomous AI eLearning platform. Featuring adaptive learning roadmaps, real-time Socratic AI tutoring, multi-role dashboards, and automated academic progress tracking." />
+    <meta name="keywords" content="adaptive education, socratic assistant, autonomous learning, study tools, curriculum planner, degree path, non-profit" />
+    <meta name="author" content="LMDpro Educational Foundation" />
+
+    <!-- Fonts for English & Arabic Academic Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Instant Theme & Language Hydration (Zero Flicker) -->
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem("app-theme") || localStorage.getItem("theme");
+          var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+          var theme = savedTheme ? savedTheme : (prefersLight ? "light" : "dark");
+          if (theme === "light") {
+            document.documentElement.classList.add("light-mode");
+            document.documentElement.setAttribute("data-theme", "light");
+            var metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) metaTheme.setAttribute("content", "#f8fafc");
+          } else {
+            document.documentElement.classList.remove("light-mode");
+            document.documentElement.setAttribute("data-theme", "dark");
+            var metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) metaTheme.setAttribute("content", "#071319");
+          }
+          var savedLang = localStorage.getItem("app-language");
+          if (savedLang === "ar") {
+            document.documentElement.setAttribute("dir", "rtl");
+            document.documentElement.setAttribute("lang", "ar");
+          } else {
+            document.documentElement.setAttribute("dir", "ltr");
+            document.documentElement.setAttribute("lang", "en");
+          }
+        } catch (e) {
+          console.warn("Theme hydration pre-check skipped:", e);
+        }
+      })();
+    </script>
+
+    <!-- PWA & Mobile App Capability Tags -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="theme-color" content="#071319" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="LMDpro" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
+
+    <!-- Educational Schema.org Structured Metadata Kit -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "LMDpro",
+        "alternateName": "LMDpro Autonomous AI eLearning Platform",
+        "url": "https://lmdpro.app",
+        "description": "LMDpro is a state-of-the-art autonomous AI eLearning platform. Featuring adaptive learning roadmaps, real-time Socratic AI tutoring, multi-role dashboards, and automated academic progress tracking.",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Adaptive Academic Courses",
+          "itemListElement": [
+            {
+              "@type": "Course",
+              "name": "Autonomous Multi-Agent AI Systems",
+              "description": "Deep architectural patterns, agentic graphs, and real-time temporal synchronization."
+            },
+            {
+              "@type": "Course",
+              "name": "Full-Stack Cloud Engineering & Scalability",
+              "description": "Distributed architectures, microservices, containerization, and cloud infrastructure."
+            }
+          ]
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

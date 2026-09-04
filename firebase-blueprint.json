@@ -1,0 +1,174 @@
+{
+  "entities": {
+    "Course": {
+      "title": "Course",
+      "description": "An eLearning course created or imported from Google Classroom",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string" },
+        "description": { "type": "string", "maxLength": 2000 },
+        "level": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "author": { "type": "string" },
+        "authorId": { "type": "string" },
+        "classroomId": { "type": "string" },
+        "rating": { "type": "number" },
+        "durationHours": { "type": "number" },
+        "tags": { "type": "array" },
+        "isAiGenerated": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "category", "description", "level", "authorId"]
+    },
+    "UserProgress": {
+      "title": "UserProgress",
+      "description": "Tracks learner course progress, XP, completed lessons, and certificates",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "completedLessonIds": { "type": "array" },
+        "xp": { "type": "number" },
+        "adaptiveLevel": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "courseId", "completedLessonIds", "xp"]
+    },
+    "ClassroomCourse": {
+      "title": "ClassroomCourse",
+      "description": "Cached Google Classroom course metadata and synced status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "section": { "type": "string" },
+        "descriptionHeading": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "courseState": { "type": "string" },
+        "alternateLink": { "type": "string" },
+        "syncedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "ownerId"]
+    },
+    "StudyGroup": {
+      "title": "StudyGroup",
+      "description": "Virtual peer study groups formed around courses, capstones, or specific study milestones",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "courseCode": { "type": "string" },
+        "courseTitle": { "type": "string" },
+        "description": { "type": "string", "maxLength": 1000 },
+        "memberCount": { "type": "number" },
+        "maxMembers": { "type": "number" },
+        "nextMeetingTime": { "type": "string" },
+        "targetGoal": { "type": "string" },
+        "tags": { "type": "array" },
+        "createdBy": { "type": "string" },
+        "members": { "type": "array" },
+        "collabLink": { "type": "string" },
+        "collabType": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "courseCode", "description", "createdBy"]
+    },
+    "ForumThread": {
+      "title": "ForumThread",
+      "description": "Course-bound discussion forum threads with AI moderation and Socratic guidance",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "courseCode": { "type": "string" },
+        "courseTitle": { "type": "string" },
+        "title": { "type": "string", "maxLength": 250 },
+        "content": { "type": "string", "maxLength": 5000 },
+        "authorName": { "type": "string" },
+        "authorAvatar": { "type": "string" },
+        "authorRole": { "type": "string" },
+        "authorId": { "type": "string" },
+        "tags": { "type": "array" },
+        "upvotes": { "type": "number" },
+        "replyCount": { "type": "number" },
+        "isSolved": { "type": "boolean" },
+        "aiModeration": { "type": "object" },
+        "replies": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["courseCode", "title", "content", "authorName"]
+    },
+    "SharedPeerResource": {
+      "title": "SharedPeerResource",
+      "description": "Peer study notes, cheat sheets, code snippets, and diagrams shared between students",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "courseCode": { "type": "string" },
+        "courseTitle": { "type": "string" },
+        "description": { "type": "string", "maxLength": 1000 },
+        "resourceType": { "type": "string", "enum": ["notes", "cheatsheet", "code", "diagram", "flashcards", "drive_doc"] },
+        "content": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorAvatar": { "type": "string" },
+        "authorId": { "type": "string" },
+        "tags": { "type": "array" },
+        "upvotes": { "type": "number" },
+        "downloads": { "type": "number" },
+        "aiSummary": { "type": "string" },
+        "aiKeyConcepts": { "type": "array" },
+        "driveUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "courseCode", "content", "authorName", "resourceType"]
+    },
+    "PeerConnection": {
+      "title": "PeerConnection",
+      "description": "AI-suggested study buddy connection between learners based on progress, interests, and courses",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "targetUserId": { "type": "string" },
+        "matchScore": { "type": "number" },
+        "status": { "type": "string", "enum": ["suggested", "connected", "invited"] },
+        "sharedCourses": { "type": "array" },
+        "reason": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "targetUserId", "matchScore", "status"]
+    }
+  },
+  "firestore": {
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Collection of all academy courses, including Google Classroom imports"
+    },
+    "/users/{userId}/progress/{courseId}": {
+      "schema": "UserProgress",
+      "description": "Subcollection storing learner progress for specific courses"
+    },
+    "/users/{userId}/classroomCourses/{classroomId}": {
+      "schema": "ClassroomCourse",
+      "description": "User Google Classroom synced courses"
+    },
+    "/study_groups/{groupId}": {
+      "schema": "StudyGroup",
+      "description": "Virtual study groups for peer-to-peer collaboration"
+    },
+    "/forum_threads/{threadId}": {
+      "schema": "ForumThread",
+      "description": "AI-moderated course discussion forum threads"
+    },
+    "/shared_resources/{resourceId}": {
+      "schema": "SharedPeerResource",
+      "description": "Peer study notes and shared learning artifacts"
+    },
+    "/users/{userId}/peer_connections/{connectionId}": {
+      "schema": "PeerConnection",
+      "description": "AI-suggested and active peer study buddy connections"
+    }
+  }
+}

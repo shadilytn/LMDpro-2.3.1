@@ -1,0 +1,11 @@
+{
+  "name": "LMDpro",
+  "description": "LMDpro is a state-of-the-art autonomous AI eLearning platform. Featuring adaptive learning roadmaps, real-time Socratic AI tutoring, multi-role dashboards, and automated academic progress tracking.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

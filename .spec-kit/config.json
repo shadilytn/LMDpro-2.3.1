@@ -1,0 +1,62 @@
+{
+  "name": "LMDpro Spec-Driven Development Suite",
+  "version": "1.0.0",
+  "spec_dir": ".spec-kit/specs",
+  "constitution": "CONSTITUTION.md",
+  "phases": [
+    {
+      "id": "spec",
+      "name": "Specification Gathering",
+      "description": "Deconstruct feature requests into user stories, acceptance criteria, and Object-Oriented design contracts under .spec-kit/specs/"
+    },
+    {
+      "id": "plan",
+      "name": "Architectural Planning",
+      "description": "Outline coordinate matrices, components mapping, and API routing requirements"
+    },
+    {
+      "id": "tasks",
+      "name": "Task Breakdown",
+      "description": "Deconstruct specifications into atomized implementation tasks"
+    },
+    {
+      "id": "implement",
+      "name": "Agentic Implementation",
+      "description": "Deploy AI Swarms to construct modular code passing AST policy rules"
+    },
+    {
+      "id": "validate",
+      "name": "Verification & QA",
+      "description": "Compile, lint, and run validation tests against the specification"
+    }
+  ],
+  "agent_registry": {
+    "orchestrator": {
+      "name": "Zalamati",
+      "model": "gemini-3.6-flash",
+      "system_prompt_reference": "Sources/SYSTEM_PROMPTS_MATRIX.md",
+      "capabilities": ["AST_VALIDATION", "FIRESTORE_SYNC", "CRAWL_SCRApE"]
+    },
+    "companion": {
+      "name": "Nashmi",
+      "model": "gemini-3.5-flash-lite",
+      "system_prompt_reference": "Sources/PRIME_CONSTITUTION.md",
+      "capabilities": ["UI_COMPANION", "NAVIGATION_ASSIST", "BENTO_CUSTOMIZER"]
+    },
+    "teacher": {
+      "name": "Petra",
+      "model": "gemini-3.1-pro-preview",
+      "system_prompt_reference": "Sources/ADVANCED_AGENTS_FRAMEWORK.md",
+      "capabilities": ["PEDAGOGICAL_GENERATION", "SOCRATIC_DIALOGUE", "EXAM_CREATION"]
+    }
+  },
+  "feature_mapping": {
+    "bento_dashboard": ".spec-kit/specs/01-bento-grid-dashboard.md",
+    "bookmarks_and_notes": ".spec-kit/specs/02-bookmarks-and-notes-system.md",
+    "course_viewer_narrator": ".spec-kit/specs/03-course-viewer-multimedia.md",
+    "agentic_swarms": ".spec-kit/specs/04-swarms-agents.md",
+    "3d_visual_explainers": ".spec-kit/specs/05-educational-3d-explainer.md",
+    "diagnostic_remedials": ".spec-kit/specs/06-remedial-assessment.md",
+    "agentic_multimodal_features": ".spec-kit/specs/07-agentic-multimodal-features.md"
+  }
+}

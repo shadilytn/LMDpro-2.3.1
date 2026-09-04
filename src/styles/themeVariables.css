@@ -1,0 +1,82 @@
+/* Dedicated CSS Theme Variables Utility - LMDpro Liquid Glass Design System */
+:root {
+  /* Core Canvas & Surfaces (LMDpro Liquid Glass Deep Slate) */
+  --bg-canvas-start: #08151c;
+  --bg-canvas-end: #0c1a24;
+  --bg-surface: #0d1f29;
+  --bg-surface-hover: #163647;
+  --bg-surface-elevated: #102634;
+  --panel-bg: rgba(19, 30, 32, 0.82);
+  --panel-border: rgba(115, 165, 173, 0.25);
+  --panel-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.65);
+
+  /* Typography */
+  --text-on-surface: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #94b8cb;
+  --text-muted-custom: #73a5ad;
+
+  /* Borders & Dividers */
+  --border-color: #1b3b4a;
+  --border-color-hover: #5bc4d4;
+
+  /* Accents - LMDpro Structural Teal & Glowing Cyan Gradient */
+  --accent-navy: #104a5a;
+  --accent-turquoise: #5bc4d4;
+  --accent-primary: #5bc4d4;
+  --accent-cyan: #22d3ee;
+  --accent-gold: #d4a017;
+  --accent-emerald: #34d399;
+  --accent-glow: #104a5a;
+  --accent-gradient: linear-gradient(135deg, #104a5a 0%, #5bc4d4 100%);
+
+  /* Inputs & Controls */
+  --input-bg: #08151c;
+  --input-text: #ffffff;
+  --input-border: #1b3b4a;
+  --input-placeholder: #638799;
+
+  /* Badges & Chips */
+  --badge-bg: rgba(91, 196, 212, 0.12);
+  --badge-border: rgba(91, 196, 212, 0.35);
+  --badge-text: #5bc4d4;
+
+  /* Touch & Mobile Targets */
+  --min-touch-target: 44px;
+  --safe-bottom-padding: env(safe-area-inset-bottom, 0px);
+}
+
+/* Light Mode Semantic Variable Overrides - Warm Neutral High-Contrast Palette */
+html.light-mode,
+body.light-mode,
+.light-mode {
+  --bg-canvas-start: #fafaf9; /* Warm neutral off-white */
+  --bg-canvas-end: #f5f5f4;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --bg-surface-elevated: #ffffff;
+  --panel-bg: rgba(255, 255, 255, 0.92);
+  --panel-border: #e7e5e4; /* Warm stone border */
+  --panel-shadow: 0 4px 24px -4px rgba(28, 25, 23, 0.08);
+
+  --text-on-surface: #1c1917; /* Warm dark stone text */
+  --text-primary: #1c1917;
+  --text-secondary: #57534e; /* Muted warm stone */
+  --text-muted-custom: #78716c;
+
+  --border-color: #e7e5e4;
+  --border-color-hover: #104a5a; /* Use navy for hover for consistency */
+
+  --accent-primary: #104a5a;
+  --accent-glow: #5bc4d4;
+
+  --input-bg: #ffffff;
+  --input-text: #1c1917;
+  --input-border: #d6d3d1;
+  --input-placeholder: #a8a29e;
+
+  --badge-bg: #f5f5f4;
+  --badge-border: #e7e5e4;
+  --badge-text: #104a5a;
+}
+

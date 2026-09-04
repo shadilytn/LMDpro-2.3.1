@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Deny Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Public or Authenticated Courses
+    match /courses/{courseId} {
+      allow read: if true;
+      allow create: if isSignedIn() && request.resource.data.authorId == request.auth.uid;
+      allow update: if isSignedIn() && (resource.data.authorId == request.auth.uid || request.resource.data.authorId == request.auth.uid);
+      allow delete: if isSignedIn() && resource.data.authorId == request.auth.uid;
+    }
+
+    // User Progress Subcollection
+    match /users/{userId}/progress/{courseId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // User Learning Path Subcollection
+    match /users/{userId}/learning_path/{docId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // User Root Document & Subcollections
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // User Profile Subcollection
+    match /users/{userId}/profile/{docId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // User Preferences Subcollection
+    match /users/{userId}/preferences/{docId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // User Google Classroom Synced Courses
+    match /users/{userId}/classroomCourses/{classroomId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Virtual Study Groups
+    match /study_groups/{groupId} {
+      allow read: if true;
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn() && (resource.data.createdBy == request.auth.uid || resource.data.createdBy == request.auth.token.email);
+    }
+
+    // Course Discussion Forums
+    match /forum_threads/{threadId} {
+      allow read: if true;
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn() && (resource.data.authorId == request.auth.uid || resource.data.authorName == request.auth.token.name);
+    }
+
+    // Shared Peer Resources & Notes
+    match /shared_resources/{resourceId} {
+      allow read: if true;
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn() && (resource.data.authorId == request.auth.uid);
+    }
+
+    // User Peer Connections Subcollection
+    match /users/{userId}/peer_connections/{connectionId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Connection Testing
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Remote Telemetry & Health Monitoring
+    match /telemetry/{docId} {
+      allow create, read: if true;
+    }
+
+    // RAG Analytics Monitoring Collection
+    match /rag_analytics/{docId} {
+      allow create, read: if true;
+    }
+
+    // System Errors & Exception Tracing
+    match /system_errors/{docId} {
+      allow create, read: if true;
+    }
+  }
+}

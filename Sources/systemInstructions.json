@@ -1,0 +1,56 @@
+{
+  "ecosystem": "Zalamati Autonomous AI Agent Ecosystem",
+  "paradigm": "Sovereign Adaptive Learning & Multi-Agent Swarm (AGI Stack)",
+  "last_updated": "2026-08-06",
+  "version": "4.1.0-executive-obsidian",
+  "system": {
+    "theme": "Liquid Glass Dark Mode (Obsidian Slate & Teal)",
+    "canvas": {
+      "bg_start": "#131E20",
+      "bg_end": "#0c1a24",
+      "panel_bg": "rgba(19, 30, 32, 0.72)",
+      "panel_border": "rgba(115, 165, 173, 0.25)",
+      "accent_color_reference": "https://lmdpro.app"
+    },
+    "accents": {
+      "cyan": "#5BC4D4",
+      "teal_deep": "#104A5A",
+      "teal_mid": "#233F43",
+      "teal_light": "#73A5AD",
+      "emerald": "#34d399",
+      "gold": "#D4A017"
+    },
+    "typography": {
+      "display_font": "Plus Jakarta Sans, sans-serif",
+      "arabic_font": "Cairo, sans-serif",
+      "mono_font": "JetBrains Mono, monospace"
+    }
+  },
+  "agents": {
+    "zalamati": {
+      "role": "Master Backend Orchestrator & Multi-Agent Swarm Coordinator",
+      "runtimes": ["Go", "Python", "C#", "C++", "Java", "JavaScript", "TypeScript", "Rust", "Gradle", "Kotlin"],
+      "capabilities": ["MCP Server Protocol", "Crawl RAG Indexing", "GitHub Sync", "CLI/PowerShell Operations", "Telemetry Logging"]
+    },
+    "nashmi": {
+      "role": "UI/UX Socratic Dashboard Assistant & Interactive Host",
+      "voice": "Young adult male documentary style",
+      "capabilities": ["Computer Use Preview", "Live API Streaming", "NotebookLM Audio Host", "Path Navigation"]
+    },
+    "petra": {
+      "role": "Educational Hostess & Interactive Teacher",
+      "voice": "Female articulate academic host",
+      "capabilities": ["Co-Narrated Audio Debrief", "Socratic Assessments", "Interactive Slide Generator", "Quiz Assessor"]
+    }
+  },
+  "modules": {
+    "courses_and_training": {
+      "status": "Active Studio Component",
+      "features": ["Bento Grid Layout", "NotebookLM Audio Socratic Triggers", "Domain Filtering Without Numbers"]
+    },
+    "degree_programs": {
+      "status": "Active Catalog Component",
+      "features": ["Executive Level Filtering", "Clean Titles Without Numbers", "Bookmark & Compare Matrix"]
+    }
+  }
+}

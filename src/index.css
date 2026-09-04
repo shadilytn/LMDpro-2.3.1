@@ -1,0 +1,1085 @@
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
+@import "./styles/themeVariables.css";
+@import "tailwindcss";
+
+/* IBM Plex Sans Arabic Font-Face explicit optimization with font-display: swap */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: local('IBM Plex Sans Arabic'),
+       url('https://fonts.gstatic.com/s/ibmplexsansarabic/v12/5a3138pA11z0mI4d37cW4j83q8a0pXbQ9Q.woff2') format('woff2');
+}
+
+:root {
+  --font-arabic: 'IBM Plex Sans Arabic', 'Cairo', 'Almarai', 'Tajawal', system-ui, -apple-system, sans-serif;
+  --font-latin: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  /* Fluid Typography Scale */
+  --text-fluid-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
+  --text-fluid-sm: clamp(0.8125rem, 0.77rem + 0.28vw, 0.9375rem);
+  --text-fluid-base: clamp(0.9375rem, 0.88rem + 0.35vw, 1.0625rem);
+  --text-fluid-lg: clamp(1.0625rem, 0.98rem + 0.45vw, 1.25rem);
+  --text-fluid-xl: clamp(1.2rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-fluid-2xl: clamp(1.45rem, 1.3rem + 0.85vw, 2rem);
+  --text-fluid-3xl: clamp(1.8rem, 1.55rem + 1.25vw, 2.75rem);
+  --text-fluid-4xl: clamp(2.2rem, 1.85rem + 1.75vw, 3.5rem);
+}
+
+/* Fluid Typography & Anti-Overflow Global Safeguards */
+*, *::before, *::after {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+body {
+  font-size: var(--text-fluid-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fluid-xs { font-size: var(--text-fluid-xs); }
+.fluid-sm { font-size: var(--text-fluid-sm); }
+.fluid-base { font-size: var(--text-fluid-base); }
+.fluid-lg { font-size: var(--text-fluid-lg); }
+.fluid-xl { font-size: var(--text-fluid-xl); }
+.fluid-2xl { font-size: var(--text-fluid-2xl); }
+.fluid-3xl { font-size: var(--text-fluid-3xl); }
+.fluid-4xl { font-size: var(--text-fluid-4xl); }
+
+/* RTL Fluid Typography & IBM Plex Sans Arabic Optimization */
+.rtl-fluid-text {
+  font-family: var(--font-arabic);
+  font-weight: 500;
+  font-variation-settings: 'wght' 500, 'wdth' 100;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  line-height: clamp(1.35, 1.25 + 0.5vw, 1.7);
+  letter-spacing: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+[dir="rtl"] .rtl-fluid-text,
+html[lang="ar"] .rtl-fluid-text {
+  font-family: var(--font-arabic);
+  font-weight: 500;
+  font-variation-settings: 'wght' 500, 'wdth' 100;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  line-height: clamp(1.4, 1.3 + 0.6vw, 1.75);
+  letter-spacing: 0em;
+}
+
+/* Mobile-first Arabic Card Container & Screen Density Adjustments */
+[dir="rtl"] .card-container,
+[dir="rtl"] .dashboard-card,
+[dir="rtl"] .dashboard-card-grid,
+[dir="rtl"] .dashboard-card-grid-item,
+[dir="rtl"] .glass-panel,
+[dir="rtl"] article,
+html[lang="ar"] .card-container,
+html[lang="ar"] .dashboard-card,
+html[lang="ar"] .dashboard-card-grid,
+html[lang="ar"] .dashboard-card-grid-item,
+html[lang="ar"] .glass-panel {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+/* Dashboard Card Grid Dynamic Utilities */
+.dashboard-card-grid {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-card-grid-item {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-card-grid-rtl {
+  direction: rtl;
+}
+
+.dashboard-card {
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  position: relative;
+  z-index: 1;
+}
+
+.rtl-fluid-card {
+  text-align: right;
+  font-family: 'IBM Plex Sans Arabic', 'Segoe UI Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
+}
+
+/* Ensure flex/grid children in RTL mode do not overflow bounds */
+[dir="rtl"] .flex > *,
+[dir="rtl"] .grid > *,
+html[lang="ar"] .flex > *,
+html[lang="ar"] .grid > * {
+  min-width: 0;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] p,
+html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] h4, html[lang="ar"] h5, html[lang="ar"] p {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .dashboard-card-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .dashboard-card-grid-rtl .dashboard-card-grid-item {
+    flex-basis: 100% !important;
+    max-width: 100% !important;
+  }
+
+  [dir="rtl"] .card-container,
+  [dir="rtl"] .dashboard-card,
+  [dir="rtl"] .glass-panel {
+    padding: clamp(0.75rem, 3vw, 1.25rem);
+    margin-bottom: 0.75rem;
+  }
+  
+  [dir="rtl"] .rtl-fluid-text {
+    font-size: clamp(0.8125rem, 0.75rem + 0.5vw, 0.9375rem);
+    font-variation-settings: 'wght' 520, 'wdth' 100;
+    line-height: 1.55;
+  }
+
+  [dir="rtl"] h3, html[lang="ar"] h3 {
+    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  }
+
+  [dir="rtl"] h4, html[lang="ar"] h4 {
+    font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1.1rem);
+  }
+  
+  /* Prevent flex/grid item overflow for long Arabic words */
+  [dir="rtl"] .flex,
+  [dir="rtl"] .grid {
+    min-width: 0;
+  }
+}
+
+/* High-DPI Mobile Display Optimization for IBM Plex Sans Arabic */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .rtl-fluid-text,
+  [dir="rtl"] .rtl-fluid-text {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variation-settings: 'wght' 500, 'wdth' 100;
+  }
+}
+
+/* Semantic Light Mode Clean Overrides */
+html.light-mode,
+body.light-mode,
+.light-mode {
+  background-color: var(--bg-canvas-start) !important;
+  color: var(--text-on-surface) !important;
+}
+
+html.light-mode .glass-panel,
+body.light-mode .glass-panel,
+.light-mode .glass-panel {
+  background: var(--panel-bg) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: var(--panel-shadow) !important;
+}
+
+html.light-mode .bg-ambient-gradient,
+body.light-mode .bg-ambient-gradient {
+  background: radial-gradient(circle at 15% 15%, rgba(16, 74, 90, 0.04) 0%, transparent 45%),
+              radial-gradient(circle at 85% 85%, rgba(91, 196, 212, 0.03) 0%, transparent 50%),
+              linear-gradient(180deg, var(--bg-canvas-start) 0%, var(--bg-canvas-end) 100%) !important;
+}
+
+html.light-mode header,
+body.light-mode header {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom-color: var(--border-color) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light-mode #main-sidebar,
+body.light-mode #main-sidebar {
+  background-color: var(--bg-surface) !important;
+  border-right-color: var(--border-color) !important;
+}
+
+html.light-mode input,
+html.light-mode textarea,
+html.light-mode select {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}
+
+html.light-mode input::placeholder,
+html.light-mode textarea::placeholder {
+  color: var(--input-placeholder) !important;
+}
+
+/* Light mode dark slate background replacements - Complete Palette */
+html.light-mode .bg-\[\#08151c\],
+html.light-mode .bg-\[\#0c1a24\],
+html.light-mode .bg-\[\#071319\],
+html.light-mode .bg-\[\#030b10\],
+html.light-mode .bg-\[\#040c12\],
+html.light-mode .bg-\[\#0e222e\],
+html.light-mode .bg-\[\#0a1822\],
+html.light-mode .bg-\[\#051119\],
+html.light-mode .bg-\[\#0a1924\],
+html.light-mode .bg-\[\#0a1b24\],
+html.light-mode .bg-\[\#07030e\],
+html.light-mode .bg-\[\#07030e\]\/80,
+html.light-mode .bg-\[\#07030e\]\/60,
+html.light-mode .bg-\[\#05020a\],
+html.light-mode .bg-\[\#10222b\],
+html.light-mode .bg-\[\#061219\],
+html.light-mode .bg-\[\#061219\]\/90,
+html.light-mode .bg-\[\#071822\],
+html.light-mode .bg-\[\#092230\],
+html.light-mode .bg-\[\#071924\],
+html.light-mode .bg-\[\#07151e\],
+html.light-mode .bg-\[\#091720\],
+html.light-mode .bg-\[\#091720\]\/80,
+html.light-mode .bg-\[\#091720\]\/90,
+html.light-mode .bg-\[\#0c2230\],
+html.light-mode .bg-\[\#0c1d27\],
+html.light-mode .bg-\[\#0d1c24\],
+html.light-mode .bg-\[\#000000\] {
+  background-color: #ffffff !important;
+}
+
+html.light-mode .bg-\[\#102836\],
+html.light-mode .bg-\[\#132e3e\],
+html.light-mode .bg-\[\#163647\],
+html.light-mode .bg-\[\#0f222e\],
+html.light-mode .bg-\[\#0a1e28\],
+html.light-mode .bg-\[\#091b24\],
+html.light-mode .bg-\[\#0e2430\],
+html.light-mode .bg-\[\#142e3d\],
+html.light-mode .bg-\[\#153444\],
+html.light-mode .bg-\[\#08151c\]\/70,
+html.light-mode .bg-\[\#0c1a24\]\/70,
+html.light-mode .bg-\[\#0c1a24\]\/40,
+html.light-mode .bg-\[\#030b10\]\/60,
+html.light-mode .bg-\[\#030b10\]\/80,
+html.light-mode .bg-\[\#030b10\]\/90 {
+  background-color: #f8fafc !important;
+}
+
+/* Light mode border color replacements */
+html.light-mode .border-\[\#1b3b4a\],
+html.light-mode .border-\[\#1b3b4a\]\/70,
+html.light-mode .border-\[\#1b3b4a\]\/60,
+html.light-mode .border-\[\#163647\],
+html.light-mode .border-\[\#1b2b34\],
+html.light-mode .border-\[\#0e222e\],
+html.light-mode .border-\[\#132e3e\],
+html.light-mode .border-\[\#143242\],
+html.light-mode .border-\[\#183d52\],
+html.light-mode .border-\[\#153444\],
+html.light-mode .border-\[\#132f3e\],
+html.light-mode .border-\[\#1a3c4f\],
+html.light-mode .border-\[\#1a3848\] {
+  border-color: #e2e8f0 !important;
+}
+
+/* Light mode high-contrast text replacements */
+html.light-mode .text-slate-400,
+html.light-mode .text-slate-500,
+html.light-mode .text-\[\#87a9b8\],
+html.light-mode .text-\[\#82a4b3\],
+html.light-mode .text-\[\#8cb0c2\],
+html.light-mode .text-\[\#789cae\],
+html.light-mode .text-\[\#73A5AD\],
+html.light-mode .text-\[\#6d94a8\],
+html.light-mode .text-\[\#628799\] {
+  color: #475569 !important;
+}
+
+html.light-mode .text-slate-300,
+html.light-mode .text-slate-200,
+html.light-mode .text-\[\#9fc5d8\] {
+  color: #334155 !important;
+}
+
+html.light-mode .text-slate-100,
+html.light-mode .text-white {
+  color: #0f172a !important;
+}
+
+html.light-mode .text-cyan-200,
+html.light-mode .text-cyan-300 {
+  color: #104a5a !important; /* Navy for high contrast in light mode */
+}
+
+/* Light mode buttons that had dark slate backgrounds */
+html.light-mode button.bg-\[\#0a1e28\],
+html.light-mode button.bg-\[\#091b24\],
+html.light-mode button.bg-\[\#0e2430\],
+html.light-mode button.bg-\[\#0e222e\],
+html.light-mode button.bg-\[\#142e3d\] {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html.light-mode button.bg-\[\#0a1e28\]:hover,
+html.light-mode button.bg-\[\#091b24\]:hover,
+html.light-mode button.bg-\[\#0e2430\]:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Maintain bright white for solid colored badges and buttons */
+html.light-mode button.bg-cyan-500,
+html.light-mode button.bg-cyan-500,
+html.light-mode button.bg-cyan-500,
+html.light-mode button.bg-blue-600,
+html.light-mode button[class*="bg-cyan-"],
+html.light-mode button[class*="bg-blue-"],
+html.light-mode button[class*="bg-cyan-"],
+html.light-mode .bg-cyan-500.text-white,
+html.light-mode .bg-blue-600.text-white,
+html.light-mode .bg-cyan-600.text-white {
+  color: #ffffff !important;
+}
+
+html.light-mode button.bg-cyan-500 *,
+html.light-mode button.bg-cyan-500 *,
+html.light-mode button.bg-cyan-500 *,
+html.light-mode button.bg-blue-600 * {
+  color: #ffffff !important;
+}
+
+/* Light mode subtle interactive elements & hover states */
+html.light-mode .hover\:bg-\[\#163647\]:hover,
+html.light-mode .hover\:bg-\[\#0f171d\]:hover,
+html.light-mode .hover\:bg-\[\#1f1f1f\]:hover,
+html.light-mode .hover\:bg-\[\#0c1a24\]:hover,
+html.light-mode .hover\:bg-\[\#102836\]:hover,
+html.light-mode .hover\:bg-\[\#122e3e\]:hover,
+html.light-mode .hover\:bg-\[\#122e3d\]:hover {
+  background-color: #f1f5f9 !important;
+  color: #020617 !important;
+}
+
+/* Light mode code and pre formatting */
+html.light-mode pre,
+html.light-mode code.bg-\[\#030b10\] {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Light mode scrollbar */
+html.light-mode ::-webkit-scrollbar-track,
+body.light-mode ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+html.light-mode ::-webkit-scrollbar-thumb,
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html.light-mode ::-webkit-scrollbar-thumb:hover,
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html.light-mode ::-webkit-scrollbar-thumb:hover,
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  background-color: #000000;
+}
+
+html.light-mode,
+body.light-mode {
+  background-color: var(--bg-canvas-start) !important;
+  background-image: none !important;
+}
+
+body {
+  font-family: var(--font-latin);
+  color: #e0e7eb;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(34, 211, 238, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(52, 211, 153, 0.05) 0px, transparent 50%);
+  animation: bg-glow 15s ease infinite alternate;
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   ACADEMIC ARABIC TYPOGRAPHY & RTL REFINEMENT (Global University Standards)
+   ========================================================================== */
+[dir='rtl'],
+.rtl-mode,
+html[lang="ar"],
+body[lang="ar"] {
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Almarai', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0 !important;
+  line-height: 1.8 !important;
+  text-align: right;
+  direction: rtl;
+}
+
+[dir='rtl'] *,
+.rtl-mode *,
+html[lang="ar"] *,
+body[lang="ar"] * {
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Almarai', system-ui, -apple-system, sans-serif;
+  letter-spacing: 0 !important;
+}
+
+[dir='rtl'] h1, [dir='rtl'] h2, [dir='rtl'] h3, [dir='rtl'] h4, [dir='rtl'] h5, [dir='rtl'] h6,
+.rtl-mode h1, .rtl-mode h2, .rtl-mode h3, .rtl-mode h4, .rtl-mode h5, .rtl-mode h6 {
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.45 !important;
+  text-rendering: optimizeLegibility;
+}
+
+[dir='rtl'] h1, .rtl-mode h1 {
+  font-weight: 800 !important;
+}
+
+[dir='rtl'] h2, .rtl-mode h2 {
+  font-weight: 700 !important;
+}
+
+[dir='rtl'] h3, [dir='rtl'] h4, .rtl-mode h3, .rtl-mode h4 {
+  font-weight: 600 !important;
+}
+
+[dir='rtl'] p, [dir='rtl'] span, [dir='rtl'] div, [dir='rtl'] li, [dir='rtl'] button, [dir='rtl'] label,
+.rtl-mode p, .rtl-mode span, .rtl-mode div, .rtl-mode li, .rtl-mode button, .rtl-mode label {
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', system-ui, sans-serif;
+  letter-spacing: 0 !important;
+}
+
+[dir='rtl'] strong, [dir='rtl'] b,
+.rtl-mode strong, .rtl-mode b {
+  font-weight: 700 !important;
+}
+
+/* RTL Directional Icon Inversion */
+[dir='rtl'] .rtl-flip,
+[dir='rtl'] .icon-directional,
+[dir='rtl'] .back-arrow,
+[dir='rtl'] .forward-arrow,
+[dir='rtl'] .progress-indicator,
+.rtl-mode .rtl-flip,
+.rtl-mode .icon-directional {
+  transform: scaleX(-1);
+}
+
+/* Ensure input clear buttons and icons fit nicely in RTL */
+[dir='rtl'] input[type="text"],
+[dir='rtl'] input[type="search"],
+[dir='rtl'] textarea,
+.rtl-mode input[type="text"],
+.rtl-mode input[type="search"],
+.rtl-mode textarea {
+  text-align: right;
+  direction: rtl;
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', system-ui, sans-serif !important;
+}
+
+/* RTL badge, tag, and chip layout spacing */
+[dir='rtl'] .tag-pill,
+.rtl-mode .tag-pill {
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+
+/* RTL-safe flex & grid alignments */
+[dir='rtl'] .text-left,
+.rtl-mode .text-left {
+  text-align: right !important;
+}
+
+[dir='rtl'] .text-right,
+.rtl-mode .text-right {
+  text-align: left !important;
+}
+
+/* ==========================================================================
+   VIEWPORT, SIDEBAR 100DVH LOCK & FIXED STICKY HEADER REFINEMENT
+   ========================================================================== */
+html, body, #root {
+  height: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+#main-sidebar {
+  height: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#main-sidebar nav {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 40 !important;
+}
+
+#main-content-viewport {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   MOBILE-FIRST 2-COLUMN RESPONSIVE OVERRIDES (DASHBOARD GRIDS, XP & STATS)
+   ========================================================================== */
+:root {
+  --layer-base: 1;
+  --layer-card: 10;
+  --layer-header: 40;
+  --layer-sidebar: 45;
+  --layer-overlay: 50;
+  --layer-modal: 100;
+  --layer-toast: 200;
+}
+
+@media (max-width: 768px) {
+  /* Persistent 2-column layout for dashboard stats, widgets, XP counters, and cards */
+  .mobile-2col-grid,
+  .dashboard-stats-grid,
+  .dashboard-widget-grid,
+  .dashboard-two-col-mobile,
+  .stats-card-grid,
+  .xp-metrics-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    padding: 0.5rem !important;
+    box-sizing: border-box !important;
+    position: relative;
+    z-index: var(--layer-base);
+    isolation: isolate;
+  }
+
+  .dashboard-stats-grid > *,
+  .dashboard-widget-grid > *,
+  .stats-card-grid > *,
+  .xp-metrics-grid > * {
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    position: relative;
+    z-index: var(--layer-card);
+    display: flex;
+    flex-direction: column;
+    /* Theme adaptation: Navy-Turquoise borders and Liquid Glass background */
+    background: var(--bg-surface-elevated) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .dashboard-stats-grid > *:hover,
+  .dashboard-widget-grid > *:hover {
+    border-color: var(--accent-turquoise) !important;
+    background: var(--bg-surface-hover) !important;
+  }
+
+  /* Prevent overlapping and force span 1 in dashboard grid items */
+  .dashboard-stats-grid > *:nth-child(n),
+  .dashboard-widget-grid > *:nth-child(n),
+  .stats-card-grid > *:nth-child(n),
+  .xp-metrics-grid > *:nth-child(n) {
+    grid-column: span 1 !important;
+    grid-row: auto !important;
+  }
+
+  /* Smooth transition for cards with nested XP/Stats data to prevent viewport breaking */
+  #main-content-viewport .grid-cols-1.sm\:grid-cols-2,
+  #main-content-viewport .grid-cols-1.md\:grid-cols-2,
+  #main-content-viewport .grid-cols-1.md\:grid-cols-3,
+  #main-content-viewport .grid-cols-2.lg\:grid-cols-4,
+  #main-content-viewport .grid-cols-3.lg\:grid-cols-3,
+  #main-content-viewport .grid-cols-4 {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+  }
+
+  /* Compact nested padding for cards on mobile viewports */
+  .mobile-compact-card,
+  #main-content-viewport .p-4.sm\:p-6,
+  #main-content-viewport .p-6,
+  #main-content-viewport .p-5,
+  #main-content-viewport .p-4 {
+    padding: 0.625rem !important;
+    border-radius: 0.875rem !important;
+  }
+
+  /* Compact legible typography scaling on mobile */
+  .mobile-compact-card h2,
+  .mobile-compact-card h3,
+  #main-content-viewport h1 {
+    font-size: 1.125rem !important;
+    line-height: 1.35rem !important;
+  }
+
+  #main-content-viewport h2 {
+    font-size: 0.9375rem !important;
+    line-height: 1.25rem !important;
+  }
+
+  #main-content-viewport h3 {
+    font-size: 0.8125rem !important;
+    line-height: 1.125rem !important;
+  }
+
+  .mobile-compact-card p,
+  #main-content-viewport p {
+    font-size: 0.75rem !important;
+    line-height: 1.05rem !important;
+  }
+
+  .mobile-compact-card .stat-number,
+  #main-content-viewport .font-mono.text-lg,
+  #main-content-viewport .font-mono.text-2xl {
+    font-size: 1.05rem !important;
+    line-height: 1.25rem !important;
+  }
+
+  /* Ensure button touch targets and icons fit neatly in 2-column mobile cells */
+  #main-content-viewport button {
+    touch-action: manipulation;
+  }
+}
+
+body:has(button:active),
+body.is-thinking,
+body.is-loading,
+body.is-animating {
+  animation-play-state: running;
+}
+
+@keyframes bg-glow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* PERFORMANCE OPTIMIZATIONS FOR DASHBOARD CARDS & HEAVY LISTS */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 300px;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+@layer utilities {
+  /* Google Gemini / True Black Ambient Background with Animated Glow */
+  .bg-ambient-gradient {
+    background: radial-gradient(circle at 15% 15%, rgba(34, 211, 238, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(52, 211, 153, 0.09) 0%, transparent 50%),
+                radial-gradient(circle at 50% 30%, rgba(212, 160, 23, 0.06) 0%, transparent 55%),
+                radial-gradient(circle at 75% 15%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+                linear-gradient(180deg, var(--bg-canvas-start) 0%, var(--bg-canvas-end) 100%);
+    background-size: 200% 200%;
+    animation: calmAmbientShift 22s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+  
+  body.is-thinking .bg-ambient-gradient,
+  body.is-loading .bg-ambient-gradient,
+  body:has(button:active) .bg-ambient-gradient {
+    animation-play-state: running;
+  }
+
+  /* Animated subtle geometric contour backdrop */
+  .bg-geometric-grid {
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Apple iPadOS 26 "Liquid Glass" frosted panels */
+  .glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--panel-border);
+  }
+
+  .glass-panel-hover {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-panel-hover:hover {
+    background: rgba(10, 24, 34, 0.96);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.9);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg, 
+    var(--bg-surface-elevated) 0%, 
+    var(--accent-navy) 25%, 
+    var(--accent-turquoise) 50%, 
+    var(--accent-navy) 75%, 
+    var(--bg-surface-elevated) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  opacity: 0.15;
+}
+
+html.light-mode .skeleton-shimmer {
+  background: linear-gradient(
+    90deg, 
+    #f1f5f9 0%, 
+    #e2e8f0 25%, 
+    #5bc4d4 50%, 
+    #e2e8f0 75%, 
+    #f1f5f9 100%
+  );
+  opacity: 0.6;
+}
+
+@keyframes calmAmbientShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+@keyframes contourPulse {
+  0%, 100% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.03);
+  }
+}
+
+.animate-contour-pulse {
+  animation: contourPulse 12s ease-in-out infinite;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2c38;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1a2c38 #000000;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1b3b4a;
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee;
+}
+
+/* Theme Switching Smooth Cross-Fade Animation & Anti-Flash */
+html,
+body,
+#root,
+.bg-ambient-gradient,
+.theme-transition-all {
+  transition: background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              fill 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-crossfade-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* ==========================================================================
+   Lightweight CSS Tooltip System ([data-tooltip])
+   ========================================================================== */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px) scale(0.95);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(7, 23, 32, 0.95);
+  color: #f1f5f9;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  border: 1px solid rgba(27, 59, 74, 0.8);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 9999;
+}
+
+[data-tooltip]::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  border-width: 4px 4px 0 4px;
+  border-style: solid;
+  border-color: rgba(7, 23, 32, 0.95) transparent transparent transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 9999;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after,
+[data-tooltip]:hover::before,
+[data-tooltip]:focus-visible::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Tooltip Positions */
+[data-tooltip-pos="bottom"]::after {
+  bottom: auto;
+  top: calc(100% + 6px);
+  transform: translateX(-50%) translateY(-4px) scale(0.95);
+}
+[data-tooltip-pos="bottom"]::before {
+  bottom: auto;
+  top: calc(100% + 2px);
+  border-width: 0 4px 4px 4px;
+  border-color: transparent transparent rgba(7, 23, 32, 0.95) transparent;
+  transform: translateX(-50%) translateY(-4px);
+}
+[data-tooltip-pos="bottom"]:hover::after,
+[data-tooltip-pos="bottom"]:focus-visible::after,
+[data-tooltip-pos="bottom"]:hover::before,
+[data-tooltip-pos="bottom"]:focus-visible::before {
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+[data-tooltip-pos="left"]::after {
+  bottom: auto;
+  top: 50%;
+  left: auto;
+  right: calc(100% + 6px);
+  transform: translateY(-50%) translateX(4px) scale(0.95);
+}
+[data-tooltip-pos="left"]::before {
+  bottom: auto;
+  top: 50%;
+  left: auto;
+  right: calc(100% + 2px);
+  border-width: 4px 0 4px 4px;
+  border-color: transparent transparent transparent rgba(7, 23, 32, 0.95);
+  transform: translateY(-50%) translateX(4px);
+}
+[data-tooltip-pos="left"]:hover::after,
+[data-tooltip-pos="left"]:focus-visible::after,
+[data-tooltip-pos="left"]:hover::before,
+[data-tooltip-pos="left"]:focus-visible::before {
+  transform: translateY(-50%) translateX(0) scale(1);
+}
+
+[data-tooltip-pos="right"]::after {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 6px);
+  transform: translateY(-50%) translateX(-4px) scale(0.95);
+}
+[data-tooltip-pos="right"]::before {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 2px);
+  border-width: 4px 4px 4px 0;
+  border-color: transparent rgba(7, 23, 32, 0.95) transparent transparent;
+  transform: translateY(-50%) translateX(-4px);
+}
+[data-tooltip-pos="right"]:hover::after,
+[data-tooltip-pos="right"]:focus-visible::after,
+[data-tooltip-pos="right"]:hover::before,
+[data-tooltip-pos="right"]:focus-visible::before {
+  transform: translateY(-50%) translateX(0) scale(1);
+}
+
+/* Light mode tooltip styling */
+html.light-mode [data-tooltip]::after,
+body.light-mode [data-tooltip]::after {
+  background: rgba(255, 255, 255, 0.98);
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+}
+
+html.light-mode [data-tooltip]::before,
+body.light-mode [data-tooltip]::before {
+  border-color: rgba(255, 255, 255, 0.98) transparent transparent transparent;
+}
+
+html.light-mode [data-tooltip-pos="bottom"]::before,
+body.light-mode [data-tooltip-pos="bottom"]::before {
+  border-color: transparent transparent rgba(255, 255, 255, 0.98) transparent;
+}
+
+html.light-mode [data-tooltip-pos="left"]::before,
+body.light-mode [data-tooltip-pos="left"]::before {
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.98);
+}
+
+html.light-mode [data-tooltip-pos="right"]::before,
+body.light-mode [data-tooltip-pos="right"]::before {
+  border-color: transparent rgba(255, 255, 255, 0.98) transparent transparent;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS & ADAPTIVE TOUCH DIRECTIVES
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Ensure min 44px touch targets on interactive controls */
+  button,
+  a[role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .touch-target {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Compact responsive padding for mobile viewports */
+  .mobile-tight-padding {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Prevent overflow on mobile horizontal scrollbars */
+  .hide-scrollbar-mobile {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar-mobile::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Adaptive text-wrap and word-break on mobile */
+  .mobile-break-words {
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    hyphens: auto;
+  }
+
+  /* Full width modal dialogs on mobile */
+  .mobile-fullscreen-dialog {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    border-radius: 1rem 1rem 0 0 !important;
+  }
+}
+
+/* Fluid adaptive container sizing */
+.adaptive-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+
+

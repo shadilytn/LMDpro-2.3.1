@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b23fb2"/>
+      <stop offset="35%" stop-color="#803588"/>
+      <stop offset="70%" stop-color="#3d4073"/>
+      <stop offset="100%" stop-color="#215967"/>
+    </linearGradient>
+  </defs>
+  <!-- Squircle Base -->
+  <rect width="512" height="512" rx="128" fill="url(#logoGrad)"/>
+  
+  <!-- Emblem White Group -->
+  <g fill="#FFFFFF">
+    <!-- Bar 1 (Shortest left) -->
+    <rect x="82" y="220" width="38" height="162" rx="2" />
+    
+    <!-- Bar 2 -->
+    <rect x="138" y="180" width="38" height="202" rx="2" />
+    
+    <!-- Bar 3 -->
+    <rect x="194" y="140" width="38" height="242" rx="2" />
+    
+    <!-- Bar 4 -->
+    <rect x="250" y="130" width="38" height="252" rx="2" />
+
+    <!-- D-shaped outer arch -->
+    <path d="M 250 130 H 330 C 400 130 436 175 436 240 C 436 305 400 350 330 350 H 302 V 382 H 330 C 420 382 480 315 480 240 C 480 165 420 98 330 98 H 250 V 130 Z" />
+  </g>
+</svg>
